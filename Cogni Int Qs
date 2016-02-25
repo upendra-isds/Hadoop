@@ -1,0 +1,117 @@
+Cognizant interview
+*******************
+
+Questions were mostly on HDFS, HIVE, PIG and basic UNIX.
+
+1) Difference between External tables and managed tables?
+If we are using external tables and DELETE is performed. Data will just be removed from the tables and NOT from the HDFS.
+Whereas in managed tables, if DELETE is used, data is gone!!!
+
+2) Tool used to migrate data from relational database (in my case : DB2) to HIVE tables.
+Sqoop
+
+3) Functions used in PIG?
+
+4) Basic commands of UNIX?
+Mentioned some of the commonly used one's to list files, directories. Also, mentioned GREP, SED etc.
+
+5) Have you used HBASE? 
+I am aware of concepts but not got a chance to work on it.
+
+6) How challenging was to start with Hadoop from a mainframe background?
+It was very challenging without having JAVA background however, did lot of homework\surfed in google.
+As I had good SQL background (db2), which made me more comfortable in HIVE compared to other components of Hadoop ecosystem.
+
+7) Rate yourself in higher order of PIG, HIVE, HDFS?
+HDFS, HIVE, PIG
+	
+8) How do you get requirements? From client directly or?
+We use to get it from onshore (tech architect). So initially, it was more kind of refined form of requirements
+Ex: - Create 2 external tables and migrate data from 2 DB2 tables and load them onto external tables.
+Gradually, we were able to understand the requirements and provide suggestion\estimates.
+
+9) Cogroup?
+I did not answer this.
+
+Googled and found it now!
+
+
+COGROUP One Table
+In its simplest form, COGROUP is exactly the same as GROUP. It groups rows based on a column, and creates bags for each group.
+
+For example, assume we have a data set of animal owners:
+
+$ cat > owners.csv
+adam,cat
+adam,dog
+alex,fish
+alice,cat
+steve,dog
+We could COGROUP on animal using the Pig code:
+
+owners = LOAD 'owners.csv' 
+    USING PigStorage(',')
+    AS (owner:chararray,animal:chararray);
+
+grouped = COGROUP owners BY animal;
+DUMP grouped;
+This returns a list of animals. For each animal, Pig groups the matching rows into bags. The resulting table grouped is:
+
+group	owners
+cat	{(adam,cat),(alice,cat)}
+dog	{(adam,dog),(steve,dog)}
+fish	{(alex,fish)}
+COGROUP Two Tables
+Where COGROUP gets fancy is that you can COGROUP on two tables at once. Pig will group the two tables and then join the two tables on the grouped column. For example, assume we also had a data set of pet names:
+
+$ cat > pets.csv
+nemo,fish
+fido,dog
+rex,dog
+paws,cat
+wiskers,cat
+Given this table, we could compare for example all the people with a given animal to all the names of that animal. The COGROUP command is:
+
+owners = LOAD 'owners.csv' 
+    USING PigStorage(',')
+    AS (owner:chararray,animal:chararray);
+
+pets = LOAD 'pets.csv' 
+    USING PigStorage(',')
+    AS (name:chararray,animal:chararray);
+
+grouped = COGROUP owners BY animal, pets by animal;
+DUMP grouped;
+This will group each table based on the animal column. For each animal, it will create a bag of matching rows from both tables. For this example, we get:
+
+group	owners	pets
+cat	{(adam,cat),(alice,cat)}	{(paws,cat),(wiskers,cat)}
+dog	{(adam,dog),(steve,dog)}	{(fido,dog),(rex,dog)}
+fish	{(alex,fish)}	{(nemo,fish)}
+In summary, you can use COGROUP when you need to group two tables by a column and then join on the grouped column.
+
+10) Give me a scenario when you have to use External tables and when to use managed tables?
+I could give an example of external tables and NOT for managed tables.
+
+
+11) Why you were asked to do the analysis in hadoop rather than mainframes?
+Answer: Cost!
+I work for an insurance company in UK. They had to take an imp decision - in what all areas of UK, they have to expand their branches\agencies.
+For which, we were asked to analyse last 10 years insurance data for those Branches. 
+
+12) Next question --- What was the DATA size?
+I said I do not know the size however, the records were more than 500 Billion.
+To provide the required results quickly and with very minimum cost, Hadoop was opted and I was part of the team.
+	
+13) Command\Sequential statement to load data from DB2 to HIVE?
+Basically, he was looking for a statement. I could not tell him exactly.
+
+14) I told him that we now have around 10 nodes. Also, asked him about the hadoop projects in cognizant.
+Answer from him was “Nodes vary from project to project. There are some well-established projects having more no. of nodes whereas some projects need to start from 
+8-10 nodes. Banking was one of the domain.
+
+
+That's all I remember!!!!!
+
+Please review this and correct\help me to improve my answers.
+
